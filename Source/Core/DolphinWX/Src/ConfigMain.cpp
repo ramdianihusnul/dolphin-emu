@@ -123,7 +123,7 @@ EVT_CHECKBOX(ID_FRAMELIMIT_USEFPSFORLIMITING, CConfigMain::CoreSettingsChanged)
 
 EVT_RADIOBOX(ID_CPUENGINE, CConfigMain::CoreSettingsChanged)
 EVT_CHECKBOX(ID_NTSCJ, CConfigMain::CoreSettingsChanged)
-
+EVT_CHECKBOX(ID_FAKE360INPUT, CConfigMain::CoreSettingsChanged)
 
 EVT_RADIOBOX(ID_DSPENGINE, CConfigMain::AudioSettingsChanged)
 EVT_CHECKBOX(ID_DSPTHREAD, CConfigMain::AudioSettingsChanged)
@@ -220,6 +220,7 @@ void CConfigMain::UpdateGUI()
 		
 		CPUEngine->Disable();
 		_NTSCJ->Disable();
+		Fake360Input->Disable();
 
 		// Disable stuff on AudioPage
 		DSPEngine->Disable();
@@ -331,7 +332,7 @@ void CConfigMain::InitializeGUIValues()
 	// General - Advanced
 	CPUEngine->SetSelection(startup_params.iCPUCore);
 	_NTSCJ->SetValue(startup_params.bForceNTSCJ);
-
+	Fake360Input->SetValue(startup_params.bFake360Input);
 
 	// Display - Interface
 	ConfirmStop->SetValue(startup_params.bConfirmStop);
@@ -491,6 +492,7 @@ void CConfigMain::InitializeGUITooltips()
 
 	// General - Advanced
 	_NTSCJ->SetToolTip(_("Forces NTSC-J mode for using the Japanese ROM font.\nLeft unchecked, dolphin defaults to NTSC-U and automatically enables this setting when playing Japanese games."));
+	Fake360Input->SetToolTip(_("Creates fake 360 controllers in all four XInput slots, allowing for 360 controller hotplug support.\nCauses all four controllers to appear connected at all times. Controllers which lose connection while active may have stuck buttons."));
 
 	// Display - Interface
 	ConfirmStop->SetToolTip(_("Show a confirmation box before stopping a game."));
@@ -551,6 +553,7 @@ void CConfigMain::CreateGUIControls()
 	// Core Settings - Advanced
 	CPUEngine = new wxRadioBox(GeneralPage, ID_CPUENGINE, _("CPU Emulator Engine"), wxDefaultPosition, wxDefaultSize, arrayStringFor_CPUEngine, 0, wxRA_SPECIFY_ROWS);
 	_NTSCJ = new wxCheckBox(GeneralPage, ID_NTSCJ, _("Force Console as NTSC-J"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
+	Fake360Input = new wxCheckBox(GeneralPage, ID_FAKE360INPUT, _("Fill XInput with Fake Devices"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
 
 	// Populate the General settings
 	wxBoxSizer* sFramelimit = new wxBoxSizer(wxHORIZONTAL);
@@ -566,6 +569,7 @@ void CConfigMain::CreateGUIControls()
 	wxStaticBoxSizer* const sbAdvanced = new wxStaticBoxSizer(wxVERTICAL, GeneralPage, _("Advanced Settings"));
 	sbAdvanced->Add(CPUEngine, 0, wxALL, 5);
 	sbAdvanced->Add(_NTSCJ, 0, wxALL, 5);
+	sbAdvanced->Add(Fake360Input, 0, wxALL, 5);
 
 	wxBoxSizer* const sGeneralPage = new wxBoxSizer(wxVERTICAL);
 	sGeneralPage->Add(sbBasic, 0, wxEXPAND | wxALL, 5);
@@ -895,6 +899,9 @@ void CConfigMain::CoreSettingsChanged(wxCommandEvent& event)
 		break;
 	case ID_NTSCJ:
 		SConfig::GetInstance().m_LocalCoreStartupParameter.bForceNTSCJ = _NTSCJ->IsChecked();
+		break;
+	case ID_FAKE360INPUT:
+		SConfig::GetInstance().m_LocalCoreStartupParameter.bFake360Input = Fake360Input->IsChecked();
 		break;
 	}
 }

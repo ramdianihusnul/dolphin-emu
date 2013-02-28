@@ -2,6 +2,7 @@
 
 #ifdef CIFACE_USE_XINPUT
 
+#include "../../Core/Src/ConfigManager.h"
 #include "XInput.h"
 
 namespace ciface
@@ -54,9 +55,24 @@ static const char* const named_motors[] =
 void Init(DeviceList& devices)
 {
 	XINPUT_CAPABILITIES caps;
-	for (int i = 0; i != 4; ++i)
-		if (ERROR_SUCCESS == XInputGetCapabilities(i, 0, &caps))
-			devices.push_back(new Device(caps, i));
+	for (int i = 0; i != 4; ++i) {
+		if (ERROR_SUCCESS != XInputGetCapabilities(i, 0, &caps)) {
+			if (!SConfig::GetInstance().m_LocalCoreStartupParameter.bFake360Input) continue;
+			caps.Type = 0;
+			caps.SubType = XINPUT_DEVSUBTYPE_GAMEPAD;
+			caps.Flags = 4;
+			caps.Vibration.wLeftMotorSpeed = caps.Vibration.wRightMotorSpeed = 0xFF;
+			caps.Gamepad.wButtons = 0xF3FF;
+			caps.Gamepad.bLeftTrigger = 0xFF;
+			caps.Gamepad.bRightTrigger = 0xFF;
+			caps.Gamepad.sThumbLX = -64;
+			caps.Gamepad.sThumbLY = -64;
+			caps.Gamepad.sThumbRX = -64;
+			caps.Gamepad.sThumbRY = -64;
+		}
+
+		devices.push_back(new Device(caps, i));
+	}
 }
 
 Device::Device(const XINPUT_CAPABILITIES& caps, u8 index)

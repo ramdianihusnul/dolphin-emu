@@ -45,6 +45,7 @@ SCoreStartupParameter::SCoreStartupParameter()
   bEnableFPRF(false), 
   bCPUThread(true), bDSPThread(false), bDSPHLE(true),
   bSkipIdle(true), bNTSC(false), bForceNTSCJ(false),
+  bFake360Input(false),
   bHLE_BS2(true), bEnableCheats(false),
   bMergeBlocks(false),
   bDPL2Decoder(false), iLatency(14),

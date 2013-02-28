@@ -247,6 +247,7 @@ void SConfig::SaveSettings()
 	ini.Set("Core", "RunCompareClient",	m_LocalCoreStartupParameter.bRunCompareClient);
 	ini.Set("Core", "FrameLimit",		m_Framelimit);
 	ini.Set("Core", "UseFPS",		b_UseFPS);
+	ini.Set("Core", "Fake360Input",	m_LocalCoreStartupParameter.bFake360Input);
 
 	// GFX Backend
 	ini.Set("Core", "GFXBackend",	m_LocalCoreStartupParameter.m_strVideoBackend);
@@ -404,6 +405,7 @@ void SConfig::LoadSettings()
 		ini.Get("Core", "DCBZ",				&m_LocalCoreStartupParameter.bDCBZOFF,			false);
 		ini.Get("Core", "FrameLimit",		&m_Framelimit,									1); // auto frame limit by default
 		ini.Get("Core", "UseFPS",			&b_UseFPS,										false); // use vps as default
+		ini.Get("Core", "Fake360Input",		&m_LocalCoreStartupParameter.bFake360Input,		false);
 
 		// GFX Backend
 		ini.Get("Core", "GFXBackend",  &m_LocalCoreStartupParameter.m_strVideoBackend, "");

@@ -72,6 +72,7 @@ private:
 		ID_DSPTHREAD,
 
 		ID_NTSCJ,
+		ID_FAKE360INPUT,
 
 		// Audio Settings
 		ID_DSPENGINE,
@@ -143,6 +144,7 @@ private:
 	wxRadioBox* CPUEngine;
 	wxCheckBox* DSPThread;
 	wxCheckBox* _NTSCJ;
+	wxCheckBox* Fake360Input;
 
 
 	wxBoxSizer* sDisplayPage; // Display settings

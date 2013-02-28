@@ -102,6 +102,7 @@ struct SCoreStartupParameter
 	bool bSkipIdle;
 	bool bNTSC;
 	bool bForceNTSCJ;
+	bool bFake360Input;
 	bool bHLE_BS2;
 	bool bEnableCheats;
 	bool bMergeBlocks;
